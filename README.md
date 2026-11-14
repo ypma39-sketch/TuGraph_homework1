@@ -12,39 +12,31 @@ TuGraph图数据库实验作业
 ![登录截图](images/登录截图.png)
 
 ## 2. 模型建立、数据导入、增删改查
-本次实验使用TuGraph系统内置生成的电影数据集，图模型结构如下：
-节点类型：
-- `person`：人员（演员、导演、编剧、制片人）
-- `movie`：电影
-- `user`：用户
-- `keyword`：关键词
-- `genre`：电影类型
-
-关系类型：
-- `acted_in`：person 参演 movie
-- `directed`：person 导演 movie
-- `write`：person 编剧 movie
-- `produce`：person 制片 movie
-- `rate`：user 给 movie 评分
-- `is_friend`：user 和 user 互为好友
-- `has_keyword`：movie 包含关键词 keyword
-- `has_genre`：movie 属于类型 genre
-
+本次实验数据集为 SNAP C.elegans-frontal，节点代表线虫的神经元，有向边代表神经元之间的突触信号传递。
 ### 2.1 图模型建立
-在TuGraph可视化建模页面，依次创建上述5类节点、8类关系，完成Schema模型构建，和图结构保持一致。
+节点类型：`Neuron`（神经元），属性：`id`（神经元编号）
+关系类型：`Synapse`（突触连接），有向关系，代表神经元A向神经元B发送信号
 
 模型创建截图：
 ![图模型schema创建](在这里粘贴模型建立截图)
 
 ### 2.2 数据导入
-使用TuGraph控制台自带的系统生成样例数据功能，一键生成配套电影数据集，数据自动加载进当前图实例，无需手动导入csv文件。
+将原始C-elegans-frontal.txt预处理为node.csv、edge.csv，在TuGraph控制台使用批量导入功能，上传两份csv文件，完成神经元网络数据导入。
 
-数据加载完成截图：
-![系统生成数据加载完成](在这里粘贴数据加载截图)
+数据导入成功截图：
+![数据导入结果](在这里粘贴导入成功截图)
 
 ### 2.3 增删改查（Cypher语句+结果截图）
-#### （1）查询（Read）：查询编号1的电影，以及参演该电影的所有演员
+#### （1）查询（Read）：查询编号为10的神经元，以及它发出突触连接的所有下游神经元
 ```cypher
-MATCH (p:person)-[:acted_in]->(m:movie)
-WHERE id(m) = 1
-RETURN p, m;
+MATCH (n1:Neuron{id:10})-[:Synapse]->(n2:Neuron)
+RETURN n1,n2;
+
+
+新增：创建测试神经元并添加突触连接
+
+修改 node_id=999 这个测试神经元的 name 属性，改成 "TEST_UPDATED"
+
+删除：移除测试神经元和新增突触
+
+聚合统计查询：统计神经元出度，筛选前 10 高输出神经元
