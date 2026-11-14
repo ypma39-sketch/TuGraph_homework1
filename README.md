@@ -8,4 +8,4 @@ TuGraph图数据库作业1
 2. 启动容器，映射端口7071：
 ```bash
 docker run -d -p 7071:7071 --name tugraph-demo tugraph/tugraph-runtime-centos7:4.4.0
-<img width="1277" height="699" alt="tugraph部署" src="https://github.com/user-attachments/assets/ca65f83b-b349-4ad3-b6c0-e2d2289433cb" />
+![Uploading tugraph部署.png…]()
